@@ -1,15 +1,15 @@
-# Employee records
--  martin:
-    name: Martin D'vloper
-    job: Developer
-    skills:
-      - python
-      - perl
-      - pascal
--  tabitha:
-    name: Tabitha Bitumen
-    job: Developer
-    skills:
-      - lisp
-      - fortran
-      - erlang
+---
+- hosts: leaf1
+  vars:
+    description: Â“this is a leaf switchÂ”
+  remote_user: root
+  tasks:
+  - name: write the quagga config file
+    template: src=quagga.j2 dest=/etc/quagga/Quagga.conf
+    notify:
+    - restart quagga
+  - name: ensure quagga is running
+    service: name=quagga state=started
+  handlers:
+    - name: restart quagga
+      service: name=quagga state=restarted
